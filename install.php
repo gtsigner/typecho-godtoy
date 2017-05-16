@@ -57,13 +57,14 @@ session_start();
 
 //判断是否已经安装
 if (!isset($_GET['finish']) && file_exists(__TYPECHO_ROOT_DIR__ . '/config.inc.php') && empty($_SESSION['typecho'])) {
+    echo "had install";
     exit;
 }
 
 // 挡掉可能的跨站请求
 if (!empty($_GET) || !empty($_POST)) {
     if (empty($_SERVER['HTTP_REFERER'])) {
-        exit;
+#        exit;
     }
 
     $parts = parse_url($_SERVER['HTTP_REFERER']);
@@ -72,7 +73,7 @@ if (!empty($_GET) || !empty($_POST)) {
     }
 
     if (empty($parts['host']) || $_SERVER['HTTP_HOST'] != $parts['host']) {
-        exit;
+#        exit;
     }
 }
 
