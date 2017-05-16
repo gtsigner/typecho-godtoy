@@ -24,10 +24,5 @@
 *.sublime*
 .sass-cache
 config.rb
-/config.inc.php
 /usr/uploads/
 /usr/*.db
-/usr/plugins/
-!/usr/plugins/HelloWorld
-/usr/themes/
-!/usr/themes/default

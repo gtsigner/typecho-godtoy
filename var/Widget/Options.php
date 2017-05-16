@@ -145,7 +145,7 @@ class Widget_Options extends Typecho_Widget
      */
     protected function ___index()
     {
-        return ($this->rewrite || (defined('__TYPECHO_REWRITE__') && __TYPECHO_REWRITE__)) 
+        return ($this->rewrite || (defined('__TYPECHO_REWRITE__') && __TYPECHO_REWRITE__))
             ? $this->rootUrl : Typecho_Common::url('index.php', $this->rootUrl);
     }
 
@@ -182,7 +182,7 @@ class Widget_Options extends Typecho_Widget
     protected function ___adminUrl()
     {
         return Typecho_Common::url(defined('__TYPECHO_ADMIN_DIR__') ?
-        __TYPECHO_ADMIN_DIR__ : '/admin/', $this->rootUrl);
+            __TYPECHO_ADMIN_DIR__ : '/admin/', $this->rootUrl);
     }
 
     /**
@@ -206,7 +206,7 @@ class Widget_Options extends Typecho_Widget
     {
         return $this->widget('Widget_Security')->getTokenUrl(
             Typecho_Router::url('do', array('action' => 'login', 'widget' => 'Login'),
-            Typecho_Common::url('index.php', $this->rootUrl)));
+                Typecho_Common::url('index.php', $this->rootUrl)));
     }
 
     /**
@@ -286,10 +286,10 @@ class Widget_Options extends Typecho_Widget
     {
         return isset($this->contentType) ? $this->contentType : 'text/html';
     }
-    
+
     /**
      * 软件名称
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -298,10 +298,10 @@ class Widget_Options extends Typecho_Widget
         list($software, $version) = explode(' ', $this->generator);
         return $software;
     }
-    
+
     /**
      * 软件版本
-     * 
+     *
      * @access protected
      * @return string
      */
@@ -310,26 +310,26 @@ class Widget_Options extends Typecho_Widget
         list($software, $version) = explode(' ', $this->generator);
         return $version;
     }
-    
+
     /**
      * 允许上传的文件类型
-     * 
+     *
      * @access protected
      * @return string
      */
     protected function ___allowedAttachmentTypes()
     {
         $attachmentTypesResult = array();
-    
+
         if (NULL != $this->attachmentTypes) {
             $attachmentTypes = str_replace(
-                array('@image@', '@media@', '@doc@'), 
+                array('@image@', '@media@', '@doc@'),
                 array('gif,jpg,jpeg,png,tiff,bmp', 'mp3,wmv,wma,rmvb,rm,avi,flv',
                     'txt,doc,docx,xls,xlsx,ppt,pptx,zip,rar,pdf'), $this->attachmentTypes);
-            
+
             $attachmentTypesResult = array_unique(array_map('trim', explode(',', $attachmentTypes)));
         }
-        
+
         return $attachmentTypesResult;
     }
 
@@ -342,19 +342,19 @@ class Widget_Options extends Typecho_Widget
     public function execute()
     {
         $this->db->fetchAll($this->db->select()->from('table.options')
-        ->where('user = 0'), array($this, 'push'));
-        
+            ->where('user = 0'), array($this, 'push'));
+
         /** 支持皮肤变量重载 */
         if (!empty($this->row['theme:' . $this->row['theme']])) {
             $themeOptions = NULL;
-        
+
             /** 解析变量 */
             if ($themeOptions = unserialize($this->row['theme:' . $this->row['theme']])) {
                 /** 覆盖变量 */
                 $this->row = array_merge($this->row, $themeOptions);
             }
         }
-        
+
         $this->stack[] = &$this->row;
 
         /** 初始化站点信息 */
@@ -374,7 +374,7 @@ class Widget_Options extends Typecho_Widget
         if (defined('__TYPECHO_ADMIN__')) {
             /** 识别在admin目录中的情况 */
             $adminDir = '/' . trim(defined('__TYPECHO_ADMIN_DIR__') ? __TYPECHO_ADMIN_DIR__ : '/admin/', '/');
-            $this->rootUrl = substr($this->rootUrl, 0, - strlen($adminDir));
+            $this->rootUrl = substr($this->rootUrl, 0, -strlen($adminDir));
         }
 
         /** 增加对SSL连接的支持 */
@@ -390,7 +390,7 @@ class Widget_Options extends Typecho_Widget
             $parsedRoutingTable = $parser->parse();
             $this->routingTable = array_merge(array($parsedRoutingTable), $this->routingTable);
             $this->db->query($this->db->update('table.options')->rows(array('value' => serialize($this->routingTable)))
-            ->where('name = ?', 'routingTable'));
+                ->where('name = ?', 'routingTable'));
         }
     }
 
@@ -539,7 +539,8 @@ class Widget_Options extends Typecho_Widget
     {
         if (!isset($this->_pluginConfig[$pluginName])) {
             if (!empty($this->row['plugin:' . $pluginName])
-            && false !== ($options = unserialize($this->row['plugin:' . $pluginName]))) {
+                && false !== ($options = unserialize($this->row['plugin:' . $pluginName]))
+            ) {
                 $this->_pluginConfig[$pluginName] = new Typecho_Config($options);
             } else {
                 throw new Typecho_Plugin_Exception(_t('插件%s的配置信息没有找到', $pluginName), 500);
@@ -560,7 +561,8 @@ class Widget_Options extends Typecho_Widget
     {
         if (!isset($this->_personalPluginConfig[$pluginName])) {
             if (!empty($this->row['_plugin:' . $pluginName])
-            && false !== ($options = unserialize($this->row['_plugin:' . $pluginName]))) {
+                && false !== ($options = unserialize($this->row['_plugin:' . $pluginName]))
+            ) {
                 $this->_personalPluginConfig[$pluginName] = new Typecho_Config($options);
             } else {
                 throw new Typecho_Plugin_Exception(_t('插件%s的配置信息没有找到', $pluginName), 500);
